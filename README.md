@@ -4,7 +4,7 @@ API REST para una aplicación de planificación nutricional.
 
 ## Estado actual
 
-La API incluye endpoints de registro e inicio de sesión. Los módulos de alimentos, comidas y resúmenes todavía están pendientes.
+La API incluye endpoints de registro e inicio de sesión y consulta pública de alimentos. Los módulos de comidas y resúmenes todavía están pendientes.
 
 ## Tecnologías
 
@@ -56,6 +56,35 @@ Responde con estado `201` y devuelve el usuario público junto con un token JWT.
 ### `POST /api/auth/login`
 
 Acepta `email` y `password`, y devuelve el usuario público junto con un token JWT. Las credenciales incorrectas responden `401`; los datos inválidos responden `400` con el formato de validación descrito abajo.
+
+## Alimentos
+
+### `GET /api/alimentos`
+
+Endpoint público que devuelve los alimentos ordenados por nombre. Acepta el filtro opcional `nombre` para buscar coincidencias parciales, sin distinguir mayúsculas y minúsculas:
+
+```text
+GET /api/alimentos?nombre=manzana
+```
+
+Si se omite `nombre` o se envía vacío, devuelve todos los alimentos. La respuesta contiene `id`, `nombre`, `calorias`, `proteina`, `carbohidratos` y `grasa` por cada alimento:
+
+```json
+{
+  "success": true,
+  "message": "Alimentos obtenidos correctamente.",
+  "data": [
+    {
+      "id": 1,
+      "nombre": "Manzana",
+      "calorias": 52,
+      "proteina": 0.3,
+      "carbohidratos": 13.8,
+      "grasa": 0.2
+    }
+  ]
+}
+```
 
 La carga inicial de alimentos usa valores nutricionales aproximados por cada 100 g, definidos en `src/database/alimentos-base.json` (campos: `nombre`, `calorias`, `proteina`, `carbohidratos` y `grasa`). Puedes editar ese archivo para modificar los alimentos base. Configura `DB_FILE` en `.env` para elegir la base de datos. Ejecuta primero `npm run db:init` y luego `npm run db:seed`; el segundo comando no realiza cambios si la tabla `alimentos` ya contiene registros.
 
