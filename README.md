@@ -1,10 +1,10 @@
 # Nutriplan API
 
-API REST para una aplicación de planificación nutricional. El proyecto está en una etapa inicial de desarrollo.
+API REST para una aplicación de planificación nutricional.
 
 ## Estado actual
 
-El repositorio contiene la estructura base de una API en Node.js y Express, junto con módulos previstos para autenticación, alimentos, comidas y resúmenes. Por ahora, esos módulos y el punto de entrada son archivos sin implementar; la API todavía no expone endpoints ni inicia un servidor.
+La API incluye endpoints de registro e inicio de sesión. Los módulos de alimentos, comidas y resúmenes todavía están pendientes.
 
 ## Tecnologías
 
@@ -33,7 +33,29 @@ npm run db:init  # Crea las tablas de la base de datos
 npm run db:seed  # Inserta 50 alimentos si la tabla alimentos está vacía
 ```
 
-Los comandos `dev` y `start` aún no inician un servidor porque `src/index.js` está pendiente de implementación.
+La API escucha en el puerto definido por `PORT` (3000 por defecto). La base de datos debe inicializarse con `npm run db:init` antes de arrancarla.
+
+## Autenticación
+
+Todos los endpoints de autenticación usan el prefijo `/api/auth`. Las contraseñas deben tener al menos 8 caracteres y se almacenan con bcrypt; las respuestas nunca incluyen el hash. Los tokens JWT expiran en una hora.
+
+### `POST /api/auth/register`
+
+Registra una cuenta con `nombre`, `email` y `password`:
+
+```json
+{
+  "nombre": "Ana Pérez",
+  "email": "ana@example.com",
+  "password": "una-clave-segura"
+}
+```
+
+Responde con estado `201` y devuelve el usuario público junto con un token JWT. El email se almacena normalizado en minúsculas; si ya existe, responde `409`.
+
+### `POST /api/auth/login`
+
+Acepta `email` y `password`, y devuelve el usuario público junto con un token JWT. Las credenciales incorrectas responden `401`; los datos inválidos responden `400` con el formato de validación descrito abajo.
 
 La carga inicial de alimentos usa valores nutricionales aproximados por cada 100 g, definidos en `src/database/alimentos-base.json` (campos: `nombre`, `calorias`, `proteina`, `carbohidratos` y `grasa`). Puedes editar ese archivo para modificar los alimentos base. Configura `DB_FILE` en `.env` para elegir la base de datos. Ejecuta primero `npm run db:init` y luego `npm run db:seed`; el segundo comando no realiza cambios si la tabla `alimentos` ya contiene registros.
 
