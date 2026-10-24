@@ -1,1 +1,0 @@
-/**Validaciones y seguriadad */

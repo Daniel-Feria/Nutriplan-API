@@ -35,3 +35,20 @@ npm run db:seed  # Inserta 50 alimentos si la tabla alimentos está vacía
 Los comandos `dev` y `start` aún no inician un servidor porque `src/index.js` está pendiente de implementación.
 
 La carga inicial de alimentos usa valores nutricionales aproximados por cada 100 g, definidos en `src/database/alimentos-base.json` (campos: `nombre`, `calorias`, `proteina`, `carbohidratos` y `grasa`). Puedes editar ese archivo para modificar los alimentos base. Configura `DB_FILE` en `.env` para elegir la base de datos. Ejecuta primero `npm run db:init` y luego `npm run db:seed`; el segundo comando no realiza cambios si la tabla `alimentos` ya contiene registros.
+
+## Respuestas de error
+
+Usa `sendError` de `src/utils/error.util.js` para responder errores con el mismo formato:
+
+```json
+{
+  "success": false,
+  "message": "Alimento no encontrado."
+}
+```
+
+```js
+import { sendError } from '../utils/error.util.js';
+
+return sendError(res, 404, 'Alimento no encontrado.');
+```
