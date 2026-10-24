@@ -28,6 +28,10 @@ Puedes copiar `.env.example` como `.env` y configurar sus valores para el entorn
 ```bash
 npm run dev  # Ejecuta el punto de entrada con nodemon
 npm start    # Ejecuta el punto de entrada con Node.js
+npm run db:init  # Crea las tablas de la base de datos
+npm run db:seed  # Inserta 50 alimentos si la tabla alimentos está vacía
 ```
 
-Estos comandos están definidos, pero aún no inician un servidor porque `src/index.js` está pendiente de implementación.
+Los comandos `dev` y `start` aún no inician un servidor porque `src/index.js` está pendiente de implementación.
+
+La carga inicial de alimentos usa valores nutricionales aproximados por cada 100 g, definidos en `src/database/alimentos-base.json` (campos: `nombre`, `calorias`, `proteina`, `carbohidratos` y `grasa`). Puedes editar ese archivo para modificar los alimentos base. Configura `DB_FILE` en `.env` para elegir la base de datos. Ejecuta primero `npm run db:init` y luego `npm run db:seed`; el segundo comando no realiza cambios si la tabla `alimentos` ya contiene registros.
