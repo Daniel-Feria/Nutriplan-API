@@ -34,7 +34,7 @@ function createToken(user, secret) {
   return jwt.sign(
     { id: user.id, nombre: user.nombre, email: user.email },
     secret,
-    { expiresIn: '1h' },
+    { expiresIn: '7d' },
   );
 }
 

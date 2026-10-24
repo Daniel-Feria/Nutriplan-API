@@ -37,7 +37,7 @@ La API escucha en el puerto definido por `PORT` (3000 por defecto). La base de d
 
 ## Autenticación
 
-Todos los endpoints de autenticación usan el prefijo `/api/auth`. Las contraseñas deben tener al menos 8 caracteres y se almacenan con bcrypt; las respuestas nunca incluyen el hash. Los tokens JWT expiran en una hora.
+Todos los endpoints de autenticación usan el prefijo `/api/auth`. Las contraseñas deben tener al menos 8 caracteres y se almacenan con bcrypt; las respuestas nunca incluyen el hash. Los tokens JWT expiran en siete días.
 
 ### `POST /api/auth/register`
 
