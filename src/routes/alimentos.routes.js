@@ -2,10 +2,17 @@ import { Router } from 'express';
 import { z } from 'zod';
 import db from '../config/db.js';
 import { validateRequest } from '../middlewares/validate.middleware.js';
+import { sendError } from '../utils/error.util.js';
 
 const router = Router();
 const alimentosQuerySchema = z.object({
   nombre: z.string().trim().optional(),
+});
+const alimentoParamsSchema = z.object({
+  id: z.string()
+    .regex(/^[1-9]\d*$/, 'El ID debe ser un entero positivo.')
+    .transform(Number)
+    .refine(Number.isSafeInteger, 'El ID debe ser un entero válido.'),
 });
 
 router.get('/', validateRequest(alimentosQuerySchema, 'query'), (req, res) => {
@@ -27,6 +34,25 @@ router.get('/', validateRequest(alimentosQuerySchema, 'query'), (req, res) => {
     success: true,
     message: 'Alimentos obtenidos correctamente.',
     data: alimentos,
+  });
+});
+
+router.get('/:id', validateRequest(alimentoParamsSchema, 'params'), (req, res) => {
+  const { id } = req.validated.params;
+  const alimento = db.prepare(`
+    SELECT id, nombre, calorias, proteina, carbohidratos, grasa
+    FROM alimentos
+    WHERE id = ?
+  `).get(id);
+
+  if (!alimento) {
+    return sendError(res, 404, 'Alimento no encontrado.');
+  }
+
+  return res.json({
+    success: true,
+    message: 'Alimento obtenido correctamente.',
+    data: alimento,
   });
 });
 
