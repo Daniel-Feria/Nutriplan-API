@@ -1,0 +1,434 @@
+{
+  "info": {
+    "name": "Nutriplan API",
+    "description": "Peticiones de ejemplo para todos los endpoints de Nutriplan API. Configura baseUrl y fecha en las variables de la colección. Ejecuta register o login para guardar automáticamente el token; crea un alimento y una comida para guardar sus IDs.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "alimentoId",
+      "value": "1"
+    },
+    {
+      "key": "comidaId",
+      "value": "1"
+    },
+    {
+      "key": "fecha",
+      "value": "2026-10-25"
+    }
+  ],
+  "item": [
+    {
+      "name": "Autenticación",
+      "item": [
+        {
+          "name": "Registrar usuario",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ana Pérez\",\n  \"email\": \"ana@example.com\",\n  \"password\": \"una-clave-segura\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Crea un usuario. Cambia el correo si ya existe; la respuesta guarda el JWT en la variable token."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "if (body.success && body.data?.token) {",
+                  "  pm.collectionVariables.set('token', body.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Iniciar sesión",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ana@example.com\",\n  \"password\": \"una-clave-segura\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Autentica un usuario existente y guarda el JWT en la variable token."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "if (body.success && body.data?.token) {",
+                  "  pm.collectionVariables.set('token', body.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Alimentos",
+      "item": [
+        {
+          "name": "Listar alimentos",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/alimentos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "alimentos"
+              ]
+            },
+            "description": "Devuelve todos los alimentos disponibles."
+          }
+        },
+        {
+          "name": "Buscar alimentos por nombre",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/alimentos?nombre=manzana",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "alimentos"
+              ],
+              "query": [
+                {
+                  "key": "nombre",
+                  "value": "manzana"
+                }
+              ]
+            },
+            "description": "Filtra alimentos por coincidencia parcial, sin distinguir mayúsculas y minúsculas."
+          }
+        },
+        {
+          "name": "Obtener alimento por ID",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/alimentos/{{alimentoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "alimentos",
+                "{{alimentoId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear alimento",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Alimento de prueba\",\n  \"calorias\": 120,\n  \"proteina\": 5.5,\n  \"carbohidratos\": 18,\n  \"grasa\": 2.1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/alimentos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "alimentos"
+              ]
+            },
+            "description": "Requiere autenticación. Guarda el ID creado en alimentoId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "if (body.success && body.data?.id) {",
+                  "  pm.collectionVariables.set('alimentoId', body.data.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Actualizar alimento",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Alimento de prueba actualizado\",\n  \"calorias\": 125,\n  \"proteina\": 6,\n  \"carbohidratos\": 19,\n  \"grasa\": 2.3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/alimentos/{{alimentoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "alimentos",
+                "{{alimentoId}}"
+              ]
+            },
+            "description": "Requiere autenticación. Todos los campos nutricionales son obligatorios."
+          }
+        },
+        {
+          "name": "Eliminar alimento",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/alimentos/{{alimentoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "alimentos",
+                "{{alimentoId}}"
+              ]
+            },
+            "description": "Requiere autenticación. No se puede eliminar un alimento que ya esté asociado a una comida."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Comidas",
+      "item": [
+        {
+          "name": "Listar comidas por fecha",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/comidas?fecha={{fecha}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "comidas"
+              ],
+              "query": [
+                {
+                  "key": "fecha",
+                  "value": "{{fecha}}"
+                }
+              ]
+            },
+            "description": "Requiere autenticación. Devuelve solo las comidas del usuario autenticado."
+          }
+        },
+        {
+          "name": "Crear comida",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"alimento_id\": {{alimentoId}},\n  \"gramos\": 150,\n  \"fecha\": \"{{fecha}}\",\n  \"tipo\": \"desayuno\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/comidas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "comidas"
+              ]
+            },
+            "description": "Requiere autenticación. alimentoId debe existir; tipo acepta desayuno, almuerzo, cena o snack. Guarda el ID creado en comidaId."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "if (body.success && body.data?.id) {",
+                  "  pm.collectionVariables.set('comidaId', body.data.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Eliminar comida",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/comidas/{{comidaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "comidas",
+                "{{comidaId}}"
+              ]
+            },
+            "description": "Requiere autenticación. Solo se puede eliminar una comida propia."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Resumen nutricional",
+      "item": [
+        {
+          "name": "Obtener resumen por fecha",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/resumen?fecha={{fecha}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "resumen"
+              ],
+              "query": [
+                {
+                  "key": "fecha",
+                  "value": "{{fecha}}"
+                }
+              ]
+            },
+            "description": "Requiere autenticación. Incluye comidas y totales diarios de calorías, proteína, carbohidratos y grasa."
+          }
+        }
+      ]
+    }
+  ]
+}

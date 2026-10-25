@@ -4,11 +4,12 @@ API REST para una aplicación de planificación nutricional.
 
 ## Estado actual
 
-La API incluye endpoints de registro e inicio de sesión, consulta y gestión de alimentos, comidas y resúmenes nutricionales.
+La aplicación sirve el sitio web NutriPlan y su API REST desde el mismo servidor. Incluye registro e inicio de sesión, consulta y gestión de alimentos, comidas y resúmenes nutricionales.
 
 ## Tecnologías
 
 - Node.js y Express
+- EJS para las páginas del sitio
 - SQLite
 - JWT y bcryptjs
 - Zod para validar entradas
@@ -33,7 +34,13 @@ npm run db:init  # Crea las tablas de la base de datos
 npm run db:seed  # Inserta 50 alimentos si la tabla alimentos está vacía
 ```
 
-La API escucha en el puerto definido por `PORT` (3000 por defecto). La base de datos debe inicializarse con `npm run db:init` antes de arrancarla.
+El sitio web y la API escuchan en el puerto definido por `PORT` (3000 por defecto). Inicializa la base de datos con `npm run db:init` antes de arrancar el servidor. Después abre `http://localhost:3000` para ver el sitio.
+
+Las páginas de registro e inicio de sesión usan `/api/auth/register` y `/api/auth/login`. El token de autenticación se conserva en `sessionStorage` durante la sesión actual del navegador.
+
+## Probar endpoints con Postman
+
+Importa [`postman_collection.json`](./postman_collection.json) en Postman y configura la variable `baseUrl` si la API no está en `http://localhost:3000`. Ejecuta `Registrar usuario` (con un correo nuevo) o `Iniciar sesión` para guardar el token automáticamente y usar los endpoints protegidos. La colección guarda también los IDs después de crear un alimento o una comida; ajusta `fecha` a la fecha que quieras consultar.
 
 ## Autenticación
 

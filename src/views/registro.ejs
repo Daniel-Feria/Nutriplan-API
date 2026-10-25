@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= etiqueta %>
+    </title>
+    <%- include('partials/head') %>
+        <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body class="d-flex flex-column vh-100 overflow-hidden">
+    <%- include('partials/navegation') %>
+        <!-- En caso que el codigo este desordenado pulsamos la tecla shift+alt+f y se nos formatea el codigo-->
+        <main class="flex-grow-1 d-flex align-items-center justify-content-center">
+            <div class="container">
+                <div class="row w-100 ">
+                    <div class="col-lg-6 mx-auto ">
+                        <div class="card-form p-4 shadow-lg bg-white rounded">
+                            <!-- Aquí va TODO el formulario (sing-in) -->
+                            <form id="sing-in" class="sing-in" data-auth-form="register">
+                                <h2 class="text-center fw-bold mb-3">Registrar Usuario</h2>
+                                <p class="text-center" data-auth-message role="status" aria-live="polite"></p>
+
+                                <p class="text-center text-muted small">Registremos tus datos personales</p>
+                                <div class="mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><ion-icon
+                                                name="person-circle-outline"></ion-icon></span>
+                                        <input type="text" class="form-control" name="nombre"
+                                            placeholder="Ingresa tu nombre completo" autocomplete="name"
+                                            maxlength="100" required />
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><ion-icon name="mail-outline"
+                                                class="form-icon"></ion-icon></span>
+                                        <input type="email" class="form-control" name="email" placeholder="Correo electrónico"
+                                            autocomplete="email" required />
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><ion-icon name="lock-closed-outline"
+                                                class="form-icon"></ion-icon></span>
+                                        <input type="password" class="form-control" name="password"
+                                            placeholder="Contraseña (mínimo 8 caracteres)" autocomplete="new-password"
+                                            minlength="8" required />
+                                    </div>
+                                </div>
+                                <div class="my-4 d-flex justify-content-center gap-3">
+
+                                    <button type="submit" class="btn btn-success">Registrar</button>
+                                    <a href="/login" class="btn btn-info">Iniciar sesión</a>
+                                    <button type="reset" class="btn btn-info">Limpiar</button>
+
+                                </div>
+                                <!-- Enlaces de recuperación -->
+                                <div class="social-icons text-center mb-3">
+                                    <a href="#"><ion-icon name="logo-twitch"></ion-icon></a>
+                                    <a href="#"><ion-icon name="logo-twitter"></ion-icon></a>
+                                    <a href="#"><ion-icon name="logo-instagram"></ion-icon></a>
+                                    <a href="#"><ion-icon name="logo-tiktok"></ion-icon></a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Scripts -->
+
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+        <!-- Bootstrap JS (opcional, para ciertos componentes) -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/js/auth.js" defer></script>
+        <%- include('partials/footer') %>
+</body>
+
+</html>

@@ -8,5 +8,5 @@ if (!Number.isInteger(port) || port < 1 || port > 65535) {
 }
 
 app.listen(port, () => {
-  console.log(`Nutriplan API escuchando en el puerto ${port}.`);
+  console.log(`NutriPlan escuchando en el puerto ${port}.`);
 });

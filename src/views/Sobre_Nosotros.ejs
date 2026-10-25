@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        <%= etiqueta %>
+    </title>
+    <%- include('partials/head') %>
+        <link rel="stylesheet" href="/css/style.css" />
+</head>
+
+
+
+<body class="d-flex flex-column min-vh-100">
+
+
+    <%- include('partials/navegation') %>
+
+
+        <main class="flex-grow-1 min-h-100">
+            <!-- Aquí va todo el contenido de la página -->
+
+            <div class="container py-4 d-flex flex-column text-center">
+                <h1>Cómo funciona</h1>
+                <h class="text-success">Tres pasos simples para transformar tu planificación alimentaria</h>
+            </div>
+            <div class="container d-flex  justify-content-around ">
+                <div class="container w-25 bg-green-200 gap-3 d-flex flex-column rounded p-3">
+                    <span
+                        class="d-inline-flex align-items-center justify-content-center rounded-circle bg-success text-white"
+                        style="width: 2rem; height: 2rem;">1</span>
+                    <ion-icon name="logo-slack" style="width: 2rem; height: 2rem;"></ion-icon>
+                    <h3>Personaliza tus preferencias</h3>
+                    <p>Cuéntanos sobre tus gustos, restricciones dietéticas, objetivos y presupuesto. Nuestra IA aprende
+                        de ti.</p>
+                </div>
+                <div class="container w-25 bg-blue-100  gap-3  d-flex flex-column rounded p-3 card shadow-lg">
+                    <span
+                        class="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary text-white"
+                        style="width: 2rem; height: 2rem;">2</span>
+                    <ion-icon name="calendar-number-outline" style="width: 2rem; height: 2rem;"></ion-icon>
+                    <h3>Genera menús inteligentes</h3>
+                    <p>Recibe menús semanales personalizados con recetas balanceadas, información nutricional y lista de
+                        compras automática.</p>
+                </div>
+                <div class="container w-25 bg-purple-100  gap-3 d-flex flex-column rounded p-3">
+                    <span
+                        class="d-inline-flex align-items-center justify-content-center rounded-circle bg-purple-300 text-white"
+                        style="width: 2rem; height: 2rem;">3</span>
+                    <ion-icon name="card-outline" style="width: 2rem; height: 2rem;"></ion-icon>
+                    <h3>Compra con un clic</h3>
+                    <p>Conecta con almacenes aliados y compra todos los ingredientes que necesitas directamente desde la
+                        app.</p>
+                </div>
+
+            </div>
+        </main>
+
+        <main class="flex-grow-1 bg-gris-500 p-4">
+            <h2 class="d-flex justify-content-center align-items-center ">Todo lo que necesitas en un solo
+                lugar</h2>
+
+        </main>
+
+        <%- include('partials/footer') %>
+
+            <!-- Scripts -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+                crossorigin="anonymous"></script>
+            <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+            <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>
