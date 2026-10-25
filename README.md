@@ -4,7 +4,7 @@ API REST para una aplicación de planificación nutricional.
 
 ## Estado actual
 
-La API incluye endpoints de registro e inicio de sesión, consulta y gestión de alimentos, y creación de comidas. El módulo de resúmenes todavía está pendiente.
+La API incluye endpoints de registro e inicio de sesión, consulta y gestión de alimentos, comidas y resúmenes nutricionales.
 
 ## Tecnologías
 
@@ -155,6 +155,45 @@ Responde con estado `201` y los datos de la comida creada. Los datos inválidos 
 ### `DELETE /api/comidas/:id`
 
 Endpoint protegido: requiere un token JWT en `Authorization: Bearer <token>`. Elimina la comida solo si pertenece al usuario autenticado. Responde `404` si no existe y `403` si pertenece a otro usuario.
+
+## Resumen nutricional
+
+### `GET /api/resumen?fecha=AAAA-MM-DD`
+
+Endpoint protegido: requiere un token JWT en `Authorization: Bearer <token>`. Devuelve las comidas de la fecha indicada que pertenecen al usuario autenticado, con sus nutrientes calculados de acuerdo con los gramos registrados (`valor por 100 g * gramos / 100`), y los totales del día. Si no hay comidas, devuelve una lista vacía y totales en cero. La fecha debe usar el formato `AAAA-MM-DD`.
+
+```json
+{
+  "success": true,
+  "message": "Resumen nutricional obtenido correctamente.",
+  "data": {
+    "fecha": "2026-10-24",
+    "comidas": [
+      {
+        "id": 1,
+        "tipo": "desayuno",
+        "gramos": 200,
+        "alimento": {
+          "id": 1,
+          "nombre": "Manzana"
+        },
+        "nutrientes": {
+          "calorias": 104,
+          "proteina": 0.6,
+          "carbohidratos": 27.6,
+          "grasa": 0.4
+        }
+      }
+    ],
+    "totales": {
+      "calorias": 104,
+      "proteina": 0.6,
+      "carbohidratos": 27.6,
+      "grasa": 0.4
+    }
+  }
+}
+```
 
 ## Validación de entradas
 
