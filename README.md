@@ -36,7 +36,7 @@ npm run db:seed  # Inserta 50 alimentos si la tabla alimentos está vacía
 
 El sitio web y la API escuchan en el puerto definido por `PORT` (3000 por defecto). Inicializa la base de datos con `npm run db:init` antes de arrancar el servidor. Después abre `http://localhost:3000` para ver el sitio.
 
-Las páginas de registro e inicio de sesión usan `/api/auth/register` y `/api/auth/login`. El token de autenticación se conserva en `sessionStorage` durante la sesión actual del navegador.
+Las páginas de registro e inicio de sesión usan `/api/auth/register` y `/api/auth/login`. Al registrarse o iniciar sesión, la aplicación guarda el token en `sessionStorage` durante la sesión actual del navegador y abre `/nutricion`, donde puedes consultar el resumen del día, registrar comidas y eliminarlas.
 
 ## Probar endpoints con Postman
 

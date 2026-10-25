@@ -32,6 +32,12 @@ router.get('/registro', (req, res) => {
   });
 });
 
+router.get('/nutricion', (req, res) => {
+  res.render('nutricion', {
+    etiqueta: 'Mi nutrición | NutriPlan',
+  });
+});
+
 router.get('/logout', (req, res) => {
   res.redirect('/');
 });

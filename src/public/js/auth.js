@@ -40,8 +40,8 @@ if (form && message) {
       message.classList.add('text-danger');
       return;
     }
-
     sessionStorage.setItem('nutriplanToken', result.data.token);
+    sessionStorage.setItem('nutriplanUser', JSON.stringify(result.data.user));
     const loginLink = document.querySelector('[data-login-link]');
 
     if (loginLink) {
@@ -49,8 +49,6 @@ if (form && message) {
       loginLink.href = '/logout';
     }
 
-    message.textContent = result.message;
-    message.classList.add('text-success');
-    form.reset();
+    window.location.assign('/nutricion');
   });
 }

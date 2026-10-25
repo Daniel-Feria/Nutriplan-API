@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= etiqueta %></title>
+    <%- include('partials/head') %>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <%- include('partials/navegation') %>
+
+    <main class="container py-4 flex-grow-1">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+            <div>
+                <h1 class="h2 mb-1">Mi nutrición</h1>
+                <p id="welcome-message" class="text-muted mb-0">Consulta tu día y registra tus comidas.</p>
+            </div>
+            <button id="logout-button" type="button" class="btn btn-outline-secondary">Cerrar sesión</button>
+        </div>
+
+        <section class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h2 class="h5">Registrar comida</h2>
+                <form id="meal-form" class="row g-3">
+                    <div class="col-md-5">
+                        <label for="food-select" class="form-label">Alimento</label>
+                        <select id="food-select" class="form-select" required>
+                            <option value="">Cargando alimentos...</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="meal-grams" class="form-label">Gramos</label>
+                        <input id="meal-grams" class="form-control" type="number" min="0.01" step="any" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="meal-type" class="form-label">Tipo</label>
+                        <select id="meal-type" class="form-select" required>
+                            <option value="desayuno">Desayuno</option>
+                            <option value="almuerzo">Almuerzo</option>
+                            <option value="cena">Cena</option>
+                            <option value="snack">Snack</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="meal-date" class="form-label">Fecha</label>
+                        <input id="meal-date" class="form-control" type="date" required>
+                    </div>
+                    <div class="col-md-1 d-flex align-items-end">
+                        <button class="btn btn-success w-100" type="submit" aria-label="Registrar comida">+</button>
+                    </div>
+                </form>
+                <p id="meal-status" class="small mt-3 mb-0" aria-live="polite"></p>
+            </div>
+        </section>
+
+        <section class="card shadow-sm mb-4">
+            <div class="card-body">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                    <h2 class="h5 mb-0">Resumen del día</h2>
+                    <label class="d-flex align-items-center gap-2" for="summary-date">
+                        <span>Fecha</span>
+                        <input id="summary-date" class="form-control" type="date" required>
+                    </label>
+                </div>
+                <p id="summary-status" class="small" aria-live="polite"></p>
+                <div class="row g-3" id="nutrient-totals">
+                    <div class="col-6 col-lg-3">
+                        <div class="border rounded p-3"><span class="text-muted">Calorías</span><strong id="total-calories" class="d-block">0 kcal</strong></div>
+                    </div>
+                    <div class="col-6 col-lg-3">
+                        <div class="border rounded p-3"><span class="text-muted">Proteína</span><strong id="total-protein" class="d-block">0 g</strong></div>
+                    </div>
+                    <div class="col-6 col-lg-3">
+                        <div class="border rounded p-3"><span class="text-muted">Carbohidratos</span><strong id="total-carbs" class="d-block">0 g</strong></div>
+                    </div>
+                    <div class="col-6 col-lg-3">
+                        <div class="border rounded p-3"><span class="text-muted">Grasa</span><strong id="total-fat" class="d-block">0 g</strong></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h5">Comidas registradas</h2>
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Alimento</th>
+                                <th>Gramos</th>
+                                <th>Calorías</th>
+                                <th>Proteína</th>
+                                <th>Carbohidratos</th>
+                                <th>Grasa</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="meals-list">
+                            <tr><td colspan="8" class="text-muted">Selecciona una fecha para ver tus comidas.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <%- include('partials/footer') %>
+    <script src="/js/nutricion.js" defer></script>
+</body>
+
+</html>

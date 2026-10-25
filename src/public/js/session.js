@@ -1,6 +1,12 @@
 const loginLink = document.querySelector('[data-login-link]');
+const authenticatedLinks = document.querySelectorAll('[data-auth-required]');
+const isAuthenticated = Boolean(sessionStorage.getItem('nutriplanToken'));
 
-if (sessionStorage.getItem('nutriplanToken') && loginLink) {
+authenticatedLinks.forEach((link) => {
+  link.hidden = !isAuthenticated;
+});
+
+if (isAuthenticated && loginLink) {
   loginLink.textContent = 'Cerrar sesión';
   loginLink.href = '/logout';
 }
@@ -11,5 +17,6 @@ document.addEventListener('click', (event) => {
 
   if (logoutLink) {
     sessionStorage.removeItem('nutriplanToken');
+    sessionStorage.removeItem('nutriplanUser');
   }
 });
