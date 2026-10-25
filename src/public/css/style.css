@@ -54,3 +54,60 @@ body {
 .login-title {
     color: #1e293b;
 }
+
+.nutrition-title {
+    color: #1e293b;
+}
+
+.btn-logout {
+    background-color: #f1f3f5;
+    border: 1px solid #fff;
+    color: #7a4b50;
+}
+
+.btn-logout:hover {
+    background-color: #e6e9ec;
+    border-color: #fff;
+    color: #683e43;
+}
+
+.contact-page {
+    background: #82ddba6e;
+}
+
+.contact-card {
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #111827;
+    box-shadow: 0 1rem 2.5rem rgb(30 64 175 / 20%) !important;
+}
+
+.contact-card-header {
+    background-color: #dbeafe;
+    border-bottom: 1px solid #bfdbfe;
+    color: #111827;
+}
+
+.contact-card .form-control {
+    border-color: #bfdbfe;
+    color: #111827;
+}
+
+.contact-card .form-control:focus {
+    border-color: #93c5fd;
+    box-shadow: 0 0 0 0.2rem rgb(147 197 253 / 25%);
+}
+
+.btn-contact,
+.btn-contact-reset {
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #111827;
+}
+
+.btn-contact:hover,
+.btn-contact-reset:hover {
+    background-color: #dbeafe;
+    border-color: #93c5fd;
+    color: #111827;
+}

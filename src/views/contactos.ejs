@@ -13,7 +13,7 @@
 
 <!-- AQUÍ EL CAMBIO: agregar las clases al body -->
 
-<body class="d-flex flex-column min-vh-100">
+<body class="contact-page d-flex flex-column min-vh-100">
 
     <!-- Navbar -->
     <%- include('partials/navegation.ejs') %>
@@ -23,9 +23,9 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-6 col-md-8 col-12">
-                        <div class="card bg-success text-white shadow-lg">
+                        <div class="card contact-card shadow-sm">
                             <!-- Cabecera de la tarjeta -->
-                            <div class="card-header text-center">
+                            <div class="card-header contact-card-header text-center">
                                 <h3 class="mb-0">Escríbenos</h3>
                             </div>
                             <!-- Cuerpo de la tarjeta con el formulario -->
@@ -57,8 +57,8 @@
                                     </div>
                                     <!-- Botones -->
                                     <div class="d-flex gap-2">
-                                        <button type="submit" class="btn btn-primary">Enviar</button>
-                                        <button type="reset" class="btn btn-danger">Limpiar</button>
+                                        <button type="submit" class="btn btn-contact">Enviar</button>
+                                        <button type="reset" class="btn btn-contact-reset">Limpiar</button>
                                     </div>
                                 </form>
                             </div>
