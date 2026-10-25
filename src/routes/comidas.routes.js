@@ -15,6 +15,12 @@ const comidaSchema = z.object({
 const comidasQuerySchema = z.object({
   fecha: z.iso.date(),
 });
+const comidaParamsSchema = z.object({
+  id: z.string()
+    .regex(/^[1-9]\d*$/, 'El ID debe ser un entero positivo.')
+    .transform(Number)
+    .refine(Number.isSafeInteger, 'El ID debe ser un entero válido.'),
+});
 
 // Lista las comidas del usuario para la fecha indicada.
 router.get(
@@ -73,5 +79,45 @@ router.post('/', authMiddleware, validateRequest(comidaSchema), (req, res) => {
     },
   });
 });
+
+// Elimina una comida solo si pertenece al usuario autenticado.
+router.delete(
+  '/:id',
+  authMiddleware,
+  validateRequest(comidaParamsSchema, 'params'),
+  (req, res) => {
+    const { id } = req.validated.params;
+    const resultado = db.transaction(() => {
+      const comida = db.prepare('SELECT usuario_id FROM comidas WHERE id = ?').get(id);
+
+      if (!comida) {
+        return 'no_encontrada';
+      }
+
+      if (comida.usuario_id !== req.user.id) {
+        return 'sin_permiso';
+      }
+
+      db.prepare('DELETE FROM comidas WHERE id = ? AND usuario_id = ?')
+        .run(id, req.user.id);
+
+      return 'eliminada';
+    })();
+
+    if (resultado === 'no_encontrada') {
+      return sendError(res, 404, 'Comida no encontrada.');
+    }
+
+    if (resultado === 'sin_permiso') {
+      return sendError(res, 403, 'No tienes permiso para eliminar esta comida.');
+    }
+
+    return res.json({
+      success: true,
+      message: 'Comida eliminada correctamente.',
+      data: { id },
+    });
+  },
+);
 
 export default router;

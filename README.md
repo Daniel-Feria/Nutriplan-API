@@ -4,7 +4,7 @@ API REST para una aplicación de planificación nutricional.
 
 ## Estado actual
 
-La API incluye endpoints de registro e inicio de sesión y consulta pública de alimentos. Los módulos de comidas y resúmenes todavía están pendientes.
+La API incluye endpoints de registro e inicio de sesión, consulta y gestión de alimentos, y creación de comidas. El módulo de resúmenes todavía está pendiente.
 
 ## Tecnologías
 
@@ -130,6 +130,31 @@ Endpoint protegido: requiere un token JWT en `Authorization: Bearer <token>`. Ac
 Endpoint protegido: requiere un token JWT en `Authorization: Bearer <token>`. Elimina el alimento indicado por ID y responde `404` si no existe. Si el alimento ya está asociado a una comida, responde `409` y no lo elimina.
 
 La carga inicial de alimentos usa valores nutricionales aproximados por cada 100 g, definidos en `src/database/alimentos-base.json` (campos: `nombre`, `calorias`, `proteina`, `carbohidratos` y `grasa`). Puedes editar ese archivo para modificar los alimentos base. Configura `DB_FILE` en `.env` para elegir la base de datos. Ejecuta primero `npm run db:init` y luego `npm run db:seed`; el segundo comando no realiza cambios si la tabla `alimentos` ya contiene registros.
+
+## Comidas
+
+### `GET /api/comidas?fecha=AAAA-MM-DD`
+
+Endpoint protegido: requiere un token JWT en `Authorization: Bearer <token>`. Devuelve las comidas de la fecha indicada que pertenecen al usuario autenticado; nunca incluye comidas de otros usuarios. Si la fecha no tiene comidas, devuelve una lista vacía. La fecha debe usar el formato `AAAA-MM-DD`.
+
+### `POST /api/comidas`
+
+Endpoint protegido: requiere un token JWT en `Authorization: Bearer <token>`. Crea una comida para el usuario autenticado. `alimento_id` debe identificar un alimento existente, `gramos` debe ser mayor que cero, `fecha` debe usar el formato `AAAA-MM-DD` y `tipo` debe ser `desayuno`, `almuerzo`, `cena` o `snack`:
+
+```json
+{
+  "alimento_id": 1,
+  "gramos": 150,
+  "fecha": "2026-10-24",
+  "tipo": "desayuno"
+}
+```
+
+Responde con estado `201` y los datos de la comida creada. Los datos inválidos responden `400`, y un `alimento_id` inexistente responde `404`.
+
+### `DELETE /api/comidas/:id`
+
+Endpoint protegido: requiere un token JWT en `Authorization: Bearer <token>`. Elimina la comida solo si pertenece al usuario autenticado. Responde `404` si no existe y `403` si pertenece a otro usuario.
 
 ## Validación de entradas
 
