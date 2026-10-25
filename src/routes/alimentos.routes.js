@@ -99,6 +99,42 @@ router.put(
   },
 );
 
+// Elimina un alimento por ID; requiere autenticación y no permite borrar los asociados a comidas.
+router.delete(
+  '/:id',
+  authMiddleware,
+  validateRequest(alimentoParamsSchema, 'params'),
+  (req, res) => {
+    const { id } = req.validated.params;
+
+    try {
+      const result = db.prepare('DELETE FROM alimentos WHERE id = ?').run(id);
+
+      if (result.changes === 0) {
+        return sendError(res, 404, 'Alimento no encontrado.');
+      }
+    } catch (error) {
+      if (
+        error.code === 'SQLITE_CONSTRAINT_FOREIGNKEY'
+        || (
+          error.code === 'SQLITE_CONSTRAINT_TRIGGER'
+          && error.message === 'FOREIGN KEY constraint failed'
+        )
+      ) {
+        return sendError(res, 409, 'No se puede eliminar un alimento asociado a comidas.');
+      }
+
+      throw error;
+    }
+
+    return res.json({
+      success: true,
+      message: 'Alimento eliminado correctamente.',
+      data: { id },
+    });
+  },
+);
+
 // Devuelve un alimento por ID o responde 404 si no existe.
 router.get('/:id', validateRequest(alimentoParamsSchema, 'params'), (req, res) => {
   const { id } = req.validated.params;
