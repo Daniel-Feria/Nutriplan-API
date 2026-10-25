@@ -12,11 +12,39 @@ const comidaSchema = z.object({
   fecha: z.iso.date(),
   tipo: z.enum(['desayuno', 'almuerzo', 'cena', 'snack']),
 });
+const comidasQuerySchema = z.object({
+  fecha: z.iso.date(),
+});
 
+// Lista las comidas del usuario para la fecha indicada.
+router.get(
+  '/',
+  authMiddleware,
+  validateRequest(comidasQuerySchema, 'query'),
+  (req, res) => {
+    const { fecha } = req.validated.query;
+    // Filtra por usuario para no mostrar comidas de otras cuentas.
+    const comidas = db.prepare(`
+      SELECT id, usuario_id, alimento_id, gramos, fecha, tipo
+      FROM comidas
+      WHERE usuario_id = ? AND fecha = ?
+      ORDER BY id
+    `).all(req.user.id, fecha);
+
+    return res.json({
+      success: true,
+      message: 'Comidas obtenidas correctamente.',
+      data: comidas,
+    });
+  },
+);
+
+// Registra una comida para el usuario autenticado.
 router.post('/', authMiddleware, validateRequest(comidaSchema), (req, res) => {
   const { alimento_id, gramos, fecha, tipo } = req.validated.body;
   const alimento = db.prepare('SELECT id FROM alimentos WHERE id = ?').get(alimento_id);
 
+  // Evita guardar una comida con un alimento inexistente.
   if (!alimento) {
     return sendError(res, 404, 'Alimento no encontrado.');
   }
