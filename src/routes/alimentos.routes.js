@@ -23,6 +23,7 @@ const alimentoParamsSchema = z.object({
     .refine(Number.isSafeInteger, 'El ID debe ser un entero válido.'),
 });
 
+// Lista alimentos y permite filtrar por coincidencia parcial en el nombre.
 router.get('/', validateRequest(alimentosQuerySchema, 'query'), (req, res) => {
   const { nombre } = req.validated.query;
   const alimentos = nombre
@@ -45,6 +46,7 @@ router.get('/', validateRequest(alimentosQuerySchema, 'query'), (req, res) => {
   });
 });
 
+// Crea un alimento; requiere autenticación y valores nutricionales no negativos.
 router.post('/', authMiddleware, validateRequest(alimentoSchema), (req, res) => {
   const { nombre, calorias, proteina, carbohidratos, grasa } = req.validated.body;
   const result = db.prepare(`
@@ -66,6 +68,38 @@ router.post('/', authMiddleware, validateRequest(alimentoSchema), (req, res) => 
   });
 });
 
+// Actualiza todos los datos de un alimento existente; requiere autenticación.
+router.put(
+  '/:id',
+  authMiddleware,
+  validateRequest(alimentoParamsSchema, 'params'),
+  validateRequest(alimentoSchema),
+  (req, res) => {
+    const { id } = req.validated.params;
+    const { nombre, calorias, proteina, carbohidratos, grasa } = req.validated.body;
+    const result = db.prepare(`
+      UPDATE alimentos
+      SET nombre = @nombre,
+          calorias = @calorias,
+          proteina = @proteina,
+          carbohidratos = @carbohidratos,
+          grasa = @grasa
+      WHERE id = @id
+    `).run({ id, nombre, calorias, proteina, carbohidratos, grasa });
+
+    if (result.changes === 0) {
+      return sendError(res, 404, 'Alimento no encontrado.');
+    }
+
+    return res.json({
+      success: true,
+      message: 'Alimento actualizado correctamente.',
+      data: { id, nombre, calorias, proteina, carbohidratos, grasa },
+    });
+  },
+);
+
+// Devuelve un alimento por ID o responde 404 si no existe.
 router.get('/:id', validateRequest(alimentoParamsSchema, 'params'), (req, res) => {
   const { id } = req.validated.params;
   const alimento = db.prepare(`
